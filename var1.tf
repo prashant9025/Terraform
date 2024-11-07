@@ -1,3 +1,4 @@
+/*
 variable "instype"{
  type=string
 }
@@ -11,3 +12,4 @@ resource aws_instance "i1"{
   Name="TF-Server"
  }
 }
+*/
