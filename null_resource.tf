@@ -1,4 +1,9 @@
-/*
+variable "x"{
+  
+  type=string
+  
+}
+
 resource aws_key_pair "abckey"{
 
  public_key=file("./prashant.pub")
@@ -17,8 +22,13 @@ resource aws_instance "i1"{
   Name="TF_Server"
   Env="Test"
  }
+}
+resource "null_resource" "nr" {
 
- provisioner "file" {
+ triggers = {
+    xyz = var.x
+  }
+  provisioner "file" {
   source      = "./apple.txt"
   destination = "/home/ubuntu/apple.txt"
 
@@ -26,10 +36,8 @@ resource aws_instance "i1"{
     type     = "ssh"
     user     = "ubuntu"
 	private_key= file("./prashant.pem")
-    host        = self.public_ip
+    host = element(aws_instance.i1[*].public_ip, 0)
   }
 }
 
 }
-
-*/

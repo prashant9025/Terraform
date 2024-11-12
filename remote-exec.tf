@@ -1,4 +1,5 @@
 /*
+
 resource aws_key_pair "abckey"{
 
  public_key=file("./prashant.pub")
@@ -18,9 +19,13 @@ resource aws_instance "i1"{
   Env="Test"
  }
 
- provisioner "file" {
-  source      = "./apple.txt"
-  destination = "/home/ubuntu/apple.txt"
+ provisioner "remote-exec" {
+  inline = [
+      "cp /etc/passwd /home/ubuntu",
+      "sudo useradd -m prashant",
+	  "sudo apt-get update",
+	  "sudo apt-get install -y apache2"
+    ]
 
   connection {
     type     = "ssh"
@@ -29,6 +34,9 @@ resource aws_instance "i1"{
     host        = self.public_ip
   }
 }
+ provisioner "local-exec" {
+    command = "echo ${self.public_ip} >> myinv.txt"
+  }
 
 }
 
